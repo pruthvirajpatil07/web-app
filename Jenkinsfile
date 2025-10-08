@@ -13,7 +13,7 @@ pipeline {
       steps {
         echo 'Cloning project from GitHub...'
         // Use credentials ID created earlier
-        git branch: 'main', url: 'https://github.com/<your-username>/<repo-name>.git'
+        git branch: 'main', url: 'https://github.com/pruthvirajpatil07/web-app'
       }
     }
 
