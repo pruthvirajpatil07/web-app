@@ -1,12 +1,9 @@
 pipeline {
   agent any
 
-  environment {
-    // change DEPLOY_DIR depending on OS
-    // Linux example: /var/www/html
-    // Windows example: C:\\inetpub\\wwwroot
-    DEPLOY_DIR = '/var/www/html'
-  }
+environment {
+    DEPLOY_DIR = 'C:\\inetpub\\wwwroot'
+}
 
   stages {
     stage('Checkout') {
@@ -42,14 +39,15 @@ pipeline {
       steps {
         echo "Deploying files to ${env.DEPLOY_DIR}"
         // Use platform-appropriate copy command
-        sh '''
-          if [ -d "${DEPLOY_DIR}" ]; then
-            sudo cp -r * ${DEPLOY_DIR}/
-          else
-            echo "Deploy dir ${DEPLOY_DIR} not found — create or update DEPLOY_DIR"
-            exit 1
-          fi
-        '''
+        bat """
+  if not exist "%DEPLOY_DIR%" (
+    echo ERROR: Deploy directory %DEPLOY_DIR% not found
+    exit /b 1
+  )
+  echo Copying files to %DEPLOY_DIR%
+  xcopy * "%DEPLOY_DIR%\\" /E /Y
+"""
+
       }
     }
 
